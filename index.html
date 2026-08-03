@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>engnadeem | Mechanical CAD & MEP Engineering</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Kufi+Arabic:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -25,8 +25,9 @@
                         sub: '#888888',
                     },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
+                        sans: ['Inter', 'Noto Kufi Arabic', 'sans-serif'],
                         mono: ['JetBrains Mono', 'monospace'],
+                        arabic: ['Noto Kufi Arabic', 'sans-serif'],
                     },
                     letterSpacing: {
                         tightest: '-0.04em',
@@ -38,7 +39,22 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
-        body { background: #050505; color: #e0e0e0; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+        body { background: #050505; color: #e0e0e0; font-family: 'Inter', 'Noto Kufi Arabic', sans-serif; overflow-x: hidden; }
+
+        /* RTL support */
+        html[dir="rtl"] body { font-family: 'Noto Kufi Arabic', 'Inter', sans-serif; }
+        html[dir="rtl"] .nav-link, html[dir="rtl"] .font-mono, html[dir="rtl"] .section-num,
+        html[dir="rtl"] .cert-link, html[dir="rtl"] .cert-table thead th,
+        html[dir="rtl"] .lang-btn, html[dir="rtl"] .preloader-text,
+        html[dir="rtl"] .skill-bar-fill { font-family: 'JetBrains Mono', monospace; }
+        html[dir="rtl"] .cert-table thead th { text-align: right; }
+        html[dir="rtl"] .cert-table tbody td { text-align: right; }
+        html[dir="rtl"] .md\\:ml-20 { margin-left: 0; margin-right: 5rem; }
+        html[dir="rtl"] .md\\:pl-8 { padding-left: 0; padding-right: 2rem; }
+        html[dir="rtl"] .corner-deco.tl { top: -1px; right: -1px; left: auto; border-width: 1px 1px 0 0; }
+        html[dir="rtl"] .corner-deco.tr { top: -1px; left: -1px; right: auto; border-width: 1px 0 0 1px; }
+        html[dir="rtl"] .corner-deco.bl { bottom: -1px; right: -1px; left: auto; border-width: 0 1px 1px 0; }
+        html[dir="rtl"] .corner-deco.br { bottom: -1px; left: -1px; right: auto; border-width: 0 0 1px 1px; }
 
         /* Preloader */
         #preloader {
@@ -47,14 +63,13 @@
             display: flex; align-items: center; justify-content: center;
             flex-direction: column; gap: 24px;
         }
-        .preloader-ring {
-            width: 60px; height: 60px;
-            border: 2px solid rgba(0,255,196,0.1);
-            border-top-color: #00ffc4;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+        .preloader-gear {
+            position: relative; width: 80px; height: 80px;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .gear-svg { animation: gearSpin 3s linear infinite; transform-origin: center; }
+        .gear-svg-reverse { animation: gearSpinReverse 2s linear infinite; transform-origin: center; }
+        @keyframes gearSpin { to { transform: rotate(360deg); } }
+        @keyframes gearSpinReverse { to { transform: rotate(-360deg); } }
         .preloader-text {
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px; color: #00ffc4;
@@ -70,9 +85,18 @@
         }
         .grid-bg-fine {
             background-image:
+                linear-gradient(rgba(0,255,196,0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,196,0.015) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        /* Blueprint grid */
+        .grid-bg-blueprint {
+            background-image:
+                linear-gradient(rgba(0,255,196,0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0,255,196,0.04) 1px, transparent 1px),
                 linear-gradient(rgba(0,255,196,0.02) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(0,255,196,0.02) 1px, transparent 1px);
-            background-size: 20px 20px;
+            background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
         }
 
         /* Scanline */
@@ -80,7 +104,7 @@
             position: absolute; inset: 0; pointer-events: none;
             background: repeating-linear-gradient(
                 0deg, transparent, transparent 2px,
-                rgba(0,255,196,0.008) 2px, rgba(0,255,196,0.008) 4px
+                rgba(0,255,196,0.006) 2px, rgba(0,255,196,0.006) 4px
             );
         }
 
@@ -105,6 +129,7 @@
             transform-origin: left; transform: scaleX(0);
             transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
+        html[dir="rtl"] .skill-bar-fill { transform-origin: right; }
         .skill-bar-fill.animate { transform: scaleX(1); }
 
         /* Table styles */
@@ -173,7 +198,7 @@
 
         /* Language toggle */
         .lang-btn {
-            padding: 8px 20px; border-radius: 30px;
+            padding: 8px 16px; border-radius: 30px;
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px; font-weight: 600;
             letter-spacing: 0.1em; cursor: pointer;
@@ -203,6 +228,7 @@
             width: 0; height: 1px; background: #00ffc4;
             transition: width 0.3s ease;
         }
+        html[dir="rtl"] .nav-link::after { left: auto; right: 0; }
         .nav-link:hover { color: #00ffc4; }
         .nav-link:hover::after { width: 100%; }
 
@@ -253,6 +279,33 @@
             background: linear-gradient(90deg, transparent, rgba(0,255,196,0.2), transparent);
         }
 
+        /* University link */
+        .uni-link {
+            color: #00ffc4; text-decoration: none;
+            border-bottom: 1px solid rgba(0,255,196,0.3);
+            transition: all 0.3s ease; padding-bottom: 1px;
+        }
+        .uni-link:hover {
+            color: #ffffff; border-bottom-color: #00ffc4;
+            text-shadow: 0 0 8px rgba(0,255,196,0.3);
+        }
+
+        /* Rotating gear decoration */
+        .gear-deco {
+            position: absolute; pointer-events: none; opacity: 0.03;
+        }
+        .gear-deco svg { animation: gearSpin 20s linear infinite; transform-origin: center; }
+        .gear-deco-reverse svg { animation: gearSpinReverse 15s linear infinite; transform-origin: center; }
+
+        /* Floating metric */
+        .metric-float {
+            position: absolute; pointer-events: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px; color: rgba(0,255,196,0.15);
+            letter-spacing: 0.1em; text-transform: uppercase;
+            white-space: nowrap;
+        }
+
         /* Responsive table */
         @media (max-width: 768px) {
             .cert-table, .cert-table thead, .cert-table tbody,
@@ -278,11 +331,14 @@
             .cert-table tbody td:nth-of-type(1)::before { content: "ORG"; }
             .cert-table tbody td:nth-of-type(2)::before { content: "CERT"; }
             .cert-table tbody td:nth-of-type(3)::before { content: "LINK"; }
+            .lang-toggle { gap: 2px; }
+            .lang-btn { padding: 6px 10px; font-size: 10px; }
+            .nav-desktop { display: none !important; }
         }
 
         /* Smooth i18n transitions */
-        [data-i18n] { transition: opacity 0.15s ease; }
-        .lang-switching [data-i18n] { opacity: 0.5; }
+        [data-i18n], [data-i18n-html] { transition: opacity 0.15s ease; }
+        .lang-switching [data-i18n], .lang-switching [data-i18n-html] { opacity: 0.5; }
 
         /* Floating particles */
         .particle {
@@ -290,14 +346,39 @@
             background: rgba(0,255,196,0.3); border-radius: 50%;
             pointer-events: none;
         }
+
+        /* Tachometer gauge */
+        .gauge-ring {
+            stroke-dasharray: 251; stroke-dashoffset: 251;
+            transition: stroke-dashoffset 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .gauge-ring.animate { stroke-dashoffset: 0; }
+
+        /* Wireframe SVG animation */
+        .wireframe-path {
+            stroke-dasharray: 1000; stroke-dashoffset: 1000;
+            animation: drawPath 4s ease forwards;
+        }
+        @keyframes drawPath {
+            to { stroke-dashoffset: 0; }
+        }
     </style>
 </head>
 <body class="grid-bg">
 
     <!-- Preloader -->
     <div id="preloader">
-        <div class="preloader-ring"></div>
-        <div class="preloader-text">INITIALIZING SYSTEMS_</div>
+        <div class="preloader-gear">
+            <svg viewBox="0 0 80 80" width="80" height="80">
+                <g class="gear-svg">
+                    <path d="M40 5 L43 15 L47 14 L45 5 L48 5 L52 14 L56 12 L52 4 L55 5 L60 13 L64 10 L57 3 L60 4 L65 11 L69 7 L61 2 L64 3 L68 9 L72 5 L64 1 L40 5Z" fill="none" stroke="#00ffc4" stroke-width="0.5" opacity="0.6"/>
+                    <circle cx="40" cy="40" r="18" fill="none" stroke="rgba(0,255,196,0.15)" stroke-width="1"/>
+                    <circle cx="40" cy="40" r="12" fill="none" stroke="rgba(0,255,196,0.1)" stroke-width="0.5"/>
+                    <circle cx="40" cy="40" r="3" fill="#00ffc4" opacity="0.4"/>
+                </g>
+            </svg>
+        </div>
+        <div class="preloader-text" data-i18n="preloader_text">INITIALIZING SYSTEMS_</div>
     </div>
 
     <!-- Navigation -->
@@ -308,25 +389,21 @@
             </div>
             <span class="font-mono text-xs font-semibold tracking-widest text-mint uppercase">engnadeem</span>
         </a>
-        <div class="hidden md:flex items-center gap-8">
-            <a href="#summary" class="nav-link">Summary</a>
-            <a href="#skills" class="nav-link">Skills</a>
-            <a href="#certs" class="nav-link">Certifications</a>
-            <a href="#projects" class="nav-link">Projects</a>
-            <a href="#experience" class="nav-link">Experience</a>
+        <div class="nav-desktop hidden md:flex items-center gap-8">
+            <a href="#summary" class="nav-link" data-i18n="nav_summary">Summary</a>
+            <a href="#skills" class="nav-link" data-i18n="nav_skills">Skills</a>
+            <a href="#certs" class="nav-link" data-i18n="nav_certs">Certifications</a>
+            <a href="#projects" class="nav-link" data-i18n="nav_projects">Projects</a>
+            <a href="#experience" class="nav-link" data-i18n="nav_experience">Experience</a>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1">
             <div class="lang-toggle flex items-center bg-white/5 rounded-full p-1 border border-border">
                 <button id="langBtnEn" class="lang-btn active" data-lang="en">EN</button>
                 <button id="langBtnZh" class="lang-btn" data-lang="zh">中文</button>
+                <button id="langBtnAr" class="lang-btn" data-lang="ar">عربي</button>
             </div>
         </div>
     </nav>
-
-    <!-- Mobile Nav Toggle -->
-    <button id="mobileMenuBtn" class="md:hidden fixed top-4 right-4 z-50 w-10 h-10 rounded-lg bg-panel border border-border flex items-center justify-center" style="display:none;">
-        <iconify-icon icon="mdi:menu" class="text-white text-xl"></iconify-icon>
-    </button>
 
     <!-- ===== HERO ===== -->
     <header id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -334,7 +411,21 @@
         <div class="glow-orb" style="width:600px;height:600px;background:rgba(0,255,196,0.04);top:-10%;right:-10%;"></div>
         <div class="glow-orb" style="width:400px;height:400px;background:rgba(0,255,196,0.03);bottom:10%;left:-5%;"></div>
         <div class="scanline"></div>
-        <div class="grid-bg-fine absolute inset-0"></div>
+        <div class="grid-bg-blueprint absolute inset-0"></div>
+
+        <!-- Gear decorations -->
+        <div class="gear-deco" style="top:10%;left:5%;width:200px;height:200px;">
+            <svg viewBox="0 0 200 200" width="200" height="200"><circle cx="100" cy="100" r="80" fill="none" stroke="#00ffc4" stroke-width="0.5"/><circle cx="100" cy="100" r="60" fill="none" stroke="#00ffc4" stroke-width="0.3"/><circle cx="100" cy="100" r="20" fill="none" stroke="#00ffc4" stroke-width="0.5"/></svg>
+        </div>
+        <div class="gear-deco gear-deco-reverse" style="bottom:15%;right:8%;width:150px;height:150px;">
+            <svg viewBox="0 0 150 150" width="150" height="150"><circle cx="75" cy="75" r="60" fill="none" stroke="#00ffc4" stroke-width="0.5"/><circle cx="75" cy="75" r="40" fill="none" stroke="#00ffc4" stroke-width="0.3"/></svg>
+        </div>
+
+        <!-- Floating engineering metrics -->
+        <div class="metric-float" style="top:20%;left:8%;">∅ 42.00 ±0.02</div>
+        <div class="metric-float" style="top:35%;right:6%;">Ra 1.6 μm</div>
+        <div class="metric-float" style="bottom:25%;left:12%;">ISO 2768-mK</div>
+        <div class="metric-float" style="bottom:40%;right:10%;">∠ 45° ±0.5°</div>
 
         <!-- Particles container -->
         <div id="particles" class="absolute inset-0 pointer-events-none"></div>
@@ -349,8 +440,8 @@
 
             <!-- Name -->
             <h1 id="heroName" class="text-4xl md:text-7xl font-semibold tracking-tightest leading-none mb-4">
-                <span class="text-white" data-i18n="name_en">Ali Nadeem</span>
-                <span class="text-mint" data-i18n="name_highlight"> ISMAIL</span>
+                <span class="text-white" data-i18n="name_first">Ali Nadeem</span>
+                <span class="text-mint" data-i18n="name_last"> ISMAIL</span>
             </h1>
 
             <!-- Subtitle -->
@@ -391,7 +482,7 @@
 
         <!-- Scroll indicator -->
         <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
-            <span class="font-mono text-[9px] tracking-[0.2em] uppercase text-sub/40">SCROLL</span>
+            <span class="font-mono text-[9px] tracking-[0.2em] uppercase text-sub/40" data-i18n="scroll_label">SCROLL</span>
             <div class="w-px h-8 bg-gradient-to-b from-mint/40 to-transparent"></div>
         </div>
     </header>
@@ -415,8 +506,12 @@
                     <div class="corner-deco bl"></div>
                     <div class="corner-deco br"></div>
                     <div class="scanline rounded-2xl"></div>
+                    <!-- Gear deco inside card -->
+                    <div class="gear-deco" style="top:-20px;right:-20px;width:120px;height:120px;opacity:0.02;">
+                        <svg viewBox="0 0 120 120" width="120" height="120"><circle cx="60" cy="60" r="50" fill="none" stroke="#00ffc4" stroke-width="0.5"/><circle cx="60" cy="60" r="30" fill="none" stroke="#00ffc4" stroke-width="0.3"/></svg>
+                    </div>
                     <p class="text-base md:text-lg leading-relaxed text-gray-300 relative z-10" data-i18n-html="summary_text">
-                        My name is Ali Nadeem, a mechanical engineer, CAD expert, and Teaching Assistant at <a href="https://www.su.edu.ye" target="_blank" rel="noopener" class="text-mint hover:text-white transition-colors underline underline-offset-4 decoration-mint/30 hover:decoration-mint">Sana'a University</a> helping to develop sustainable energy solutions in Yemen. I am currently pursuing my master's degree in mechanical engineering at <a href="https://www.cqu.edu.cn" target="_blank" rel="noopener" class="text-mint hover:text-white transition-colors underline underline-offset-4 decoration-mint/30 hover:decoration-mint">Chongqing University</a> while working as a full-time Mechanical Engineer. My professional work spans multiple projects focused on sustainable development and the Fourth Industrial Revolution (Industry 4.0).
+                        My name is Ali Nadeem, a mechanical engineer, CAD expert, and Teaching Assistant at <a href="https://www.su.edu.ye" target="_blank" rel="noopener" class="uni-link">Sana'a University</a> helping to develop sustainable energy solutions in Yemen. I am currently pursuing my master's degree in mechanical engineering at <a href="https://www.cqu.edu.cn" target="_blank" rel="noopener" class="uni-link">Chongqing University</a> while working as a full-time Mechanical Engineer. My professional work spans multiple projects focused on sustainable development and the Fourth Industrial Revolution (Industry 4.0).
                     </p>
                     <div class="mt-8 flex flex-wrap gap-3">
                         <span class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-mint/5 border border-mint/10 text-mint font-mono text-[10px] tracking-wider uppercase">
@@ -459,7 +554,7 @@
                         <div class="skill-bar-fill" style="width:95%"></div>
                     </div>
                     <div class="flex justify-between mt-2">
-                        <span class="font-mono text-[10px] text-sub tracking-wider">PROFICIENCY</span>
+                        <span class="font-mono text-[10px] text-sub tracking-wider" data-i18n="proficiency_label">PROFICIENCY</span>
                         <span class="font-mono text-[10px] text-mint tracking-wider">95%</span>
                     </div>
                 </div>
@@ -476,7 +571,7 @@
                         <div class="skill-bar-fill" style="width:92%"></div>
                     </div>
                     <div class="flex justify-between mt-2">
-                        <span class="font-mono text-[10px] text-sub tracking-wider">PROFICIENCY</span>
+                        <span class="font-mono text-[10px] text-sub tracking-wider" data-i18n="proficiency_label">PROFICIENCY</span>
                         <span class="font-mono text-[10px] text-mint tracking-wider">92%</span>
                     </div>
                 </div>
@@ -493,7 +588,7 @@
                         <div class="skill-bar-fill" style="width:88%"></div>
                     </div>
                     <div class="flex justify-between mt-2">
-                        <span class="font-mono text-[10px] text-sub tracking-wider">PROFICIENCY</span>
+                        <span class="font-mono text-[10px] text-sub tracking-wider" data-i18n="proficiency_label">PROFICIENCY</span>
                         <span class="font-mono text-[10px] text-mint tracking-wider">88%</span>
                     </div>
                 </div>
@@ -510,7 +605,7 @@
                         <div class="skill-bar-fill" style="width:85%"></div>
                     </div>
                     <div class="flex justify-between mt-2">
-                        <span class="font-mono text-[10px] text-sub tracking-wider">PROFICIENCY</span>
+                        <span class="font-mono text-[10px] text-sub tracking-wider" data-i18n="proficiency_label">PROFICIENCY</span>
                         <span class="font-mono text-[10px] text-mint tracking-wider">85%</span>
                     </div>
                 </div>
@@ -528,7 +623,6 @@
                 </div>
             </div>
             <div class="md:ml-20 md:pl-8 space-y-12">
-
                 <!-- Engineering, CAD & Design -->
                 <div>
                     <h3 class="flex items-center gap-3 mb-5">
@@ -537,49 +631,22 @@
                     </h3>
                     <div class="overflow-x-auto rounded-xl border border-border">
                         <table class="cert-table">
-                            <thead>
-                                <tr>
-                                    <th data-i18n="th_org">Organization</th>
-                                    <th data-i18n="th_cert">Certification / Course Name</th>
-                                    <th data-i18n="th_cred">Credential</th>
-                                </tr>
-                            </thead>
+                            <thead><tr>
+                                <th data-i18n="th_org">Organization</th>
+                                <th data-i18n="th_cert">Certification / Course Name</th>
+                                <th data-i18n="th_cred">Credential</th>
+                            </tr></thead>
                             <tbody>
-                                <tr>
-                                    <td class="text-sub">Dassault Systèmes</td>
-                                    <td class="text-gray-300" data-i18n="cert_dassault_3dexperience">Certified 3DEXPERIENCE 3DSwymer - Associate</td>
-                                    <td><a href="https://www.credly.com/badges/ab50efbf-0107-4578-81a8-9be1fc4a97f8/linked_in_profile" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">Dassault Systèmes</td>
-                                    <td class="text-gray-300" data-i18n="cert_dassault_3dcreator">Certified SOLIDWORKS 3D Creator Associate</td>
-                                    <td><a href="https://www.credly.com/badges/3fc49817-4680-4d4d-868a-387eb2ee879a/linked_in_profile" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">Dassault Systèmes</td>
-                                    <td class="text-gray-300" data-i18n="cert_dassault_cswa">SOLIDWORKS CAD Design Associate (CSWA)</td>
-                                    <td><a href="https://cv.virtualtester.com/qr/?b=SLDWRKS&i=C-527ZNFSLGH" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">Dassault Systèmes</td>
-                                    <td class="text-gray-300" data-i18n="cert_dassault_sd">SOLIDWORKS Sustainability Associate (CSWA-SD)</td>
-                                    <td><a href="https://cv.virtualtester.com/qr/?b=SLDWRKS&i=C-ARHVFTMX3E" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">Autodesk / Coursera</td>
-                                    <td class="text-gray-300" data-i18n="cert_autodesk_cam">Intro to CAD, CAM & Practical CNC Machining</td>
-                                    <td><a href="https://www.coursera.org/account/accomplishments/certificate/FGZZU4A5DJMM" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">Autodesk / Coursera</td>
-                                    <td class="text-gray-300" data-i18n="cert_autodesk_fusion">Intro to Mechanical Eng. Design & Manufacturing (Fusion 360)</td>
-                                    <td><a href="https://www.coursera.org/account/accomplishments/certificate/LK23CQ4AD6JN" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
+                                <tr><td class="text-sub">Dassault Systèmes</td><td class="text-gray-300" data-i18n="cert_dassault_3dexperience">Certified 3DEXPERIENCE 3DSwymer - Associate</td><td><a href="https://www.credly.com/badges/ab50efbf-0107-4578-81a8-9be1fc4a97f8/linked_in_profile" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">Dassault Systèmes</td><td class="text-gray-300" data-i18n="cert_dassault_3dcreator">Certified SOLIDWORKS 3D Creator Associate</td><td><a href="https://www.credly.com/badges/3fc49817-4680-4d4d-868a-387eb2ee879a/linked_in_profile" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">Dassault Systèmes</td><td class="text-gray-300" data-i18n="cert_dassault_cswa">SOLIDWORKS CAD Design Associate (CSWA)</td><td><a href="https://cv.virtualtester.com/qr/?b=SLDWRKS&i=C-527ZNFSLGH" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">Dassault Systèmes</td><td class="text-gray-300" data-i18n="cert_dassault_sd">SOLIDWORKS Sustainability Associate (CSWA-SD)</td><td><a href="https://cv.virtualtester.com/qr/?b=SLDWRKS&i=C-ARHVFTMX3E" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">Autodesk / Coursera</td><td class="text-gray-300" data-i18n="cert_autodesk_cam">Intro to CAD, CAM & Practical CNC Machining</td><td><a href="https://www.coursera.org/account/accomplishments/certificate/FGZZU4A5DJMM" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">Autodesk / Coursera</td><td class="text-gray-300" data-i18n="cert_autodesk_fusion">Intro to Mechanical Eng. Design & Manufacturing (Fusion 360)</td><td><a href="https://www.coursera.org/account/accomplishments/certificate/LK23CQ4AD6JN" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-
                 <!-- Enterprise Software & Systems (SAP) -->
                 <div>
                     <h3 class="flex items-center gap-3 mb-5">
@@ -588,54 +655,19 @@
                     </h3>
                     <div class="overflow-x-auto rounded-xl border border-border">
                         <table class="cert-table">
-                            <thead>
-                                <tr>
-                                    <th data-i18n="th_org">Organization</th>
-                                    <th data-i18n="th_cert">Certification / Course Name</th>
-                                    <th data-i18n="th_cred">Credential</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th data-i18n="th_org">Organization</th><th data-i18n="th_cert">Certification / Course Name</th><th data-i18n="th_cred">Credential</th></tr></thead>
                             <tbody>
-                                <tr>
-                                    <td class="text-sub">SAP / Credly</td>
-                                    <td class="text-gray-300" data-i18n="cert_sap_asset">SAP S/4HANA Asset Management</td>
-                                    <td><a href="https://www.credly.com/badges/f3ce989c-33ae-4b62-af34-7f0bc4c7e7a9/linked_in_profile" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">SAP / Credly</td>
-                                    <td class="text-gray-300" data-i18n="cert_sap_industry">SAP Industry 4.Now</td>
-                                    <td><a href="https://www.credly.com/badges/97ec74de-793f-44a9-8fe1-be3567c1f110/linked_in_profile" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">SAP / Credly</td>
-                                    <td class="text-gray-300" data-i18n="cert_sap_quality">SAP Quality Management ERP 6.0 EHP5</td>
-                                    <td><a href="https://www.credly.com/badges/7a065b60-6665-42f0-9f89-bf9e3572c10f/linked_in_profile" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">SAP / Credly</td>
-                                    <td class="text-gray-300" data-i18n="cert_sap_bpi">SAP Business Process Integration (S/4HANA)</td>
-                                    <td><a href="https://www.credly.com/badges/3e1fe495-c54b-46a0-80b7-79949fd23e96/linked_in_profile" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">SAP / Credly</td>
-                                    <td class="text-gray-300" data-i18n="cert_sap_sales">SAP Sales Cloud 2011</td>
-                                    <td><a href="https://www.credly.com/badges/7401cd38-69cd-4c82-b60d-615ea06caf43/linked_in_profile" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">SAP / Credly</td>
-                                    <td class="text-gray-300" data-i18n="cert_sap_s4hana">SAP Certified – SAP S/4HANA Cloud Private Edition (Sourcing & Procurement)</td>
-                                    <td><a href="https://www.credly.com/badges/3251fb34-bab6-41cb-9af3-079b518eb4ae" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">SAP / Credly</td>
-                                    <td class="text-gray-300" data-i18n="cert_sap_badge">SAP Certification (Badge ID: 60f595d2‑7750‑434a‑9477‑f7ce8e100694)</td>
-                                    <td><a href="https://www.credly.com/badges/60f595d2-7750-434a-9477-f7ce8e100694" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
+                                <tr><td class="text-sub">SAP / Credly</td><td class="text-gray-300" data-i18n="cert_sap_asset">SAP S/4HANA Asset Management</td><td><a href="https://www.credly.com/badges/f3ce989c-33ae-4b62-af34-7f0bc4c7e7a9/linked_in_profile" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">SAP / Credly</td><td class="text-gray-300" data-i18n="cert_sap_industry">SAP Industry 4.Now</td><td><a href="https://www.credly.com/badges/97ec74de-793f-44a9-8fe1-be3567c1f110/linked_in_profile" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">SAP / Credly</td><td class="text-gray-300" data-i18n="cert_sap_quality">SAP Quality Management ERP 6.0 EHP5</td><td><a href="https://www.credly.com/badges/7a065b60-6665-42f0-9f89-bf9e3572c10f/linked_in_profile" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">SAP / Credly</td><td class="text-gray-300" data-i18n="cert_sap_bpi">SAP Business Process Integration (S/4HANA)</td><td><a href="https://www.credly.com/badges/3e1fe495-c54b-46a0-80b7-79949fd23e96/linked_in_profile" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">SAP / Credly</td><td class="text-gray-300" data-i18n="cert_sap_sales">SAP Sales Cloud 2011</td><td><a href="https://www.credly.com/badges/7401cd38-69cd-4c82-b60d-615ea06caf43/linked_in_profile" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">SAP / Credly</td><td class="text-gray-300" data-i18n="cert_sap_s4hana">SAP Certified – SAP S/4HANA Cloud Private Edition (Sourcing & Procurement)</td><td><a href="https://www.credly.com/badges/3251fb34-bab6-41cb-9af3-079b518eb4ae" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">SAP / Credly</td><td class="text-gray-300" data-i18n="cert_sap_badge">SAP Certification (Badge ID: 60f595d2‑7750‑434a‑9477‑f7ce8e100694)</td><td><a href="https://www.credly.com/badges/60f595d2-7750-434a-9477-f7ce8e100694" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-
                 <!-- Data Science, ML & Programming -->
                 <div>
                     <h3 class="flex items-center gap-3 mb-5">
@@ -644,29 +676,14 @@
                     </h3>
                     <div class="overflow-x-auto rounded-xl border border-border">
                         <table class="cert-table">
-                            <thead>
-                                <tr>
-                                    <th data-i18n="th_org">Organization</th>
-                                    <th data-i18n="th_cert">Certification / Course Name</th>
-                                    <th data-i18n="th_cred">Credential</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th data-i18n="th_org">Organization</th><th data-i18n="th_cert">Certification / Course Name</th><th data-i18n="th_cred">Credential</th></tr></thead>
                             <tbody>
-                                <tr>
-                                    <td class="text-sub">MathWorks</td>
-                                    <td class="text-gray-300" data-i18n="cert_mathworks">Machine Learning Onramp</td>
-                                    <td><a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=e3e68317-958b-4836-bb9a-a95d99d3ccfe&" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">Coursera</td>
-                                    <td class="text-gray-300" data-i18n="cert_raspberry">Raspberry Pi Platform & Python Programming</td>
-                                    <td><a href="https://www.coursera.org/account/accomplishments/certificate/WAPAH8XSVPHE" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
+                                <tr><td class="text-sub">MathWorks</td><td class="text-gray-300" data-i18n="cert_mathworks">Machine Learning Onramp</td><td><a href="https://matlabacademy.mathworks.com/progress/share/certificate.html?id=e3e68317-958b-4836-bb9a-a95d99d3ccfe&" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">Coursera</td><td class="text-gray-300" data-i18n="cert_raspberry">Raspberry Pi Platform & Python Programming</td><td><a href="https://www.coursera.org/account/accomplishments/certificate/WAPAH8XSVPHE" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
-
                 <!-- Project Management, Operations & Communication -->
                 <div>
                     <h3 class="flex items-center gap-3 mb-5">
@@ -675,54 +692,16 @@
                     </h3>
                     <div class="overflow-x-auto rounded-xl border border-border">
                         <table class="cert-table">
-                            <thead>
-                                <tr>
-                                    <th data-i18n="th_org">Organization</th>
-                                    <th data-i18n="th_cert">Certification / Course Name</th>
-                                    <th data-i18n="th_cred">Credential</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th data-i18n="th_org">Organization</th><th data-i18n="th_cert">Certification / Course Name</th><th data-i18n="th_cred">Credential</th></tr></thead>
                             <tbody>
-                                <tr>
-                                    <td class="text-sub">UNIDO</td>
-                                    <td class="text-gray-300" data-i18n="cert_unido">Industry 4.0</td>
-                                    <td><a href="https://drive.google.com/file/d/15gA1nBDlnKdn_SdhDDySqFVkyxF84jRv/view" target="_blank" class="cert-link"><span data-i18n="view_certificate">VIEW</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">UNSSC</td>
-                                    <td class="text-gray-300" data-i18n="cert_unssc">Fundamentals of Procurement</td>
-                                    <td><a href="https://drive.google.com/file/d/12cm3NItQf9eiOciOSa-mu41jAM04m3Y-/view" target="_blank" class="cert-link"><span data-i18n="view_certificate">VIEW</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">Univ. of Virginia / Coursera</td>
-                                    <td class="text-gray-300" data-i18n="cert_uva">Fundamentals of Project Planning & Management</td>
-                                    <td><a href="https://www.coursera.org/account/accomplishments/verify/A3VJJNLX5KPE" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">VMEdu Inc.</td>
-                                    <td class="text-gray-300" data-i18n="cert_vmedu">Six Sigma Yellow Belt</td>
-                                    <td><a href="https://drive.google.com/file/d/11GzNZPpwGnLhDYkF_KfbYsNR4aK1JL_c/view" target="_blank" class="cert-link"><span data-i18n="view_certificate">VIEW</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">Coursera</td>
-                                    <td class="text-gray-300" data-i18n="cert_emails">Write Professional Emails in English</td>
-                                    <td><a href="https://www.coursera.org/account/accomplishments/verify/FEWKPLAFE3QN" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">Univ. of Pennsylvania / Coursera</td>
-                                    <td class="text-gray-300" data-i18n="cert_stem">English for STEM</td>
-                                    <td><a href="https://www.coursera.org/account/accomplishments/certificate/ZK33URA9VSXL" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">Google / Coursera</td>
-                                    <td class="text-gray-300" data-i18n="cert_pm1">Foundations of Project Management</td>
-                                    <td><a href="https://www.coursera.org/account/accomplishments/verify/BOJ5WFHWPSMH" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-sub">Google / Coursera</td>
-                                    <td class="text-gray-300" data-i18n="cert_pm2">Foundations of Project Management (second certificate)</td>
-                                    <td><a href="https://www.coursera.org/account/accomplishments/verify/9KMVZWSGEGB4" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td>
-                                </tr>
+                                <tr><td class="text-sub">UNIDO</td><td class="text-gray-300" data-i18n="cert_unido">Industry 4.0</td><td><a href="https://drive.google.com/file/d/15gA1nBDlnKdn_SdhDDySqFVkyxF84jRv/view" target="_blank" class="cert-link"><span data-i18n="view_certificate">VIEW</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">UNSSC</td><td class="text-gray-300" data-i18n="cert_unssc">Fundamentals of Procurement</td><td><a href="https://drive.google.com/file/d/12cm3NItQf9eiOciOSa-mu41jAM04m3Y-/view" target="_blank" class="cert-link"><span data-i18n="view_certificate">VIEW</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">Univ. of Virginia / Coursera</td><td class="text-gray-300" data-i18n="cert_uva">Fundamentals of Project Planning & Management</td><td><a href="https://www.coursera.org/account/accomplishments/verify/A3VJJNLX5KPE" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">VMEdu Inc.</td><td class="text-gray-300" data-i18n="cert_vmedu">Six Sigma Yellow Belt</td><td><a href="https://drive.google.com/file/d/11GzNZPpwGnLhDYkF_KfbYsNR4aK1JL_c/view" target="_blank" class="cert-link"><span data-i18n="view_certificate">VIEW</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">Coursera</td><td class="text-gray-300" data-i18n="cert_emails">Write Professional Emails in English</td><td><a href="https://www.coursera.org/account/accomplishments/verify/FEWKPLAFE3QN" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">Univ. of Pennsylvania / Coursera</td><td class="text-gray-300" data-i18n="cert_stem">English for STEM</td><td><a href="https://www.coursera.org/account/accomplishments/certificate/ZK33URA9VSXL" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">Google / Coursera</td><td class="text-gray-300" data-i18n="cert_pm1">Foundations of Project Management</td><td><a href="https://www.coursera.org/account/accomplishments/verify/BOJ5WFHWPSMH" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+                                <tr><td class="text-sub">Google / Coursera</td><td class="text-gray-300" data-i18n="cert_pm2">Foundations of Project Management (second certificate)</td><td><a href="https://www.coursera.org/account/accomplishments/verify/9KMVZWSGEGB4" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -740,7 +719,6 @@
                 </div>
             </div>
             <div class="md:ml-20 md:pl-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-
                 <!-- Project 1 -->
                 <div class="project-card">
                     <div class="project-img">
@@ -750,7 +728,7 @@
                     <div class="p-7">
                         <div class="flex items-center gap-2 mb-3">
                             <span class="inline-block px-3 py-1 rounded-full bg-mint/10 border border-mint/20 text-mint font-mono text-[10px] tracking-wider uppercase">CAD</span>
-                            <span class="inline-block px-3 py-1 rounded-full bg-mint/10 border border-mint/20 text-mint font-mono text-[10px] tracking-wider uppercase">Industrial</span>
+                            <span class="inline-block px-3 py-1 rounded-full bg-mint/10 border border-mint/20 text-mint font-mono text-[10px] tracking-wider uppercase" data-i18n="tag_industrial">Industrial</span>
                         </div>
                         <h4 class="text-xl font-semibold tracking-tight text-white mb-3" data-i18n="p1_title">Advanced Industrial Application</h4>
                         <p class="text-sm text-sub leading-relaxed mb-4"><strong class="text-gray-300" data-i18n="p1_obj_label">Objective:</strong> <span data-i18n="p1_text">Applying advanced mechanical engineering and CAD principles to a complex industrial project.</span></p>
@@ -761,7 +739,6 @@
                         </ul>
                     </div>
                 </div>
-
                 <!-- Project 2 -->
                 <div class="project-card">
                     <div class="project-img">
@@ -783,7 +760,6 @@
                         <a href="https://gmail1423914.autodesk360.com/g/shares/SH35dfcQT936092f0e43fd428eec41c8726c" target="_blank" class="cert-link"><span data-i18n="p2_link">View Solar Lab 3D Model</span> <iconify-icon icon="mdi:cube-scan" class="text-xs"></iconify-icon></a>
                     </div>
                 </div>
-
                 <!-- Project 3 -->
                 <div class="project-card">
                     <div class="project-img relative h-[220px] bg-gradient-to-br from-panel via-card to-panel flex items-center justify-center">
@@ -807,7 +783,6 @@
                         </ul>
                     </div>
                 </div>
-
                 <!-- Project 4 -->
                 <div class="project-card">
                     <div class="project-img relative h-[220px] bg-gradient-to-br from-panel via-card to-panel flex items-center justify-center">
@@ -820,7 +795,7 @@
                     </div>
                     <div class="p-7">
                         <div class="flex items-center gap-2 mb-3">
-                            <span class="inline-block px-3 py-1 rounded-full bg-mint/10 border border-mint/20 text-mint font-mono text-[10px] tracking-wider uppercase">Industry 4.0</span>
+                            <span class="inline-block px-3 py-1 rounded-full bg-mint/10 border border-mint/20 text-mint font-mono text-[10px] tracking-wider uppercase" data-i18n="tag_i40">Industry 4.0</span>
                             <span class="inline-block px-3 py-1 rounded-full bg-mint/10 border border-mint/20 text-mint font-mono text-[10px] tracking-wider uppercase">AI</span>
                         </div>
                         <h4 class="text-xl font-semibold tracking-tight text-white mb-3" data-i18n="p4_title">Intelligent Manufacturing: Digital Twins</h4>
@@ -831,7 +806,6 @@
                         </ul>
                     </div>
                 </div>
-
             </div>
         </section>
 
@@ -845,12 +819,8 @@
                 </div>
             </div>
             <div class="md:ml-20 md:pl-8 space-y-8">
-                <!-- Experience Item 1 -->
                 <div class="relative bg-panel border border-border rounded-2xl p-8 transition-all duration-300 hover:border-mint/15">
-                    <div class="corner-deco tl"></div>
-                    <div class="corner-deco tr"></div>
-                    <div class="corner-deco bl"></div>
-                    <div class="corner-deco br"></div>
+                    <div class="corner-deco tl"></div><div class="corner-deco tr"></div><div class="corner-deco bl"></div><div class="corner-deco br"></div>
                     <div class="flex items-start gap-5">
                         <div class="w-12 h-12 rounded-xl bg-mint/5 border border-mint/10 flex items-center justify-center flex-shrink-0 mt-1">
                             <iconify-icon icon="mdi:school-outline" class="text-mint text-2xl"></iconify-icon>
@@ -862,12 +832,8 @@
                         </div>
                     </div>
                 </div>
-                <!-- Experience Item 2 -->
                 <div class="relative bg-panel border border-border rounded-2xl p-8 transition-all duration-300 hover:border-mint/15">
-                    <div class="corner-deco tl"></div>
-                    <div class="corner-deco tr"></div>
-                    <div class="corner-deco bl"></div>
-                    <div class="corner-deco br"></div>
+                    <div class="corner-deco tl"></div><div class="corner-deco tr"></div><div class="corner-deco bl"></div><div class="corner-deco br"></div>
                     <div class="flex items-start gap-5">
                         <div class="w-12 h-12 rounded-xl bg-mint/5 border border-mint/10 flex items-center justify-center flex-shrink-0 mt-1">
                             <iconify-icon icon="mdi:translate" class="text-mint text-2xl"></iconify-icon>
@@ -875,21 +841,14 @@
                         <div>
                             <h4 class="text-lg font-semibold tracking-tight text-white mb-3" data-i18n="exp_comp">Additional Competencies</h4>
                             <ul class="space-y-3">
-                                <li class="flex items-start gap-2 text-sm text-sub">
-                                    <iconify-icon icon="mdi:chevron-right" class="text-mint mt-0.5 flex-shrink-0"></iconify-icon>
-                                    <span><strong class="text-gray-300" data-i18n="exp_lang_label">Languages:</strong> <span data-i18n="exp_lang_text">Arabic (Native), English (Professional), Mandarin Chinese (HSK 3).</span></span>
-                                </li>
-                                <li class="flex items-start gap-2 text-sm text-sub">
-                                    <iconify-icon icon="mdi:chevron-right" class="text-mint mt-0.5 flex-shrink-0"></iconify-icon>
-                                    <span><strong class="text-gray-300" data-i18n="exp_interests_label">Interests:</strong> <span data-i18n="exp_interests_text">Photography (Cultural scenes and structural landscapes).</span></span>
-                                </li>
+                                <li class="flex items-start gap-2 text-sm text-sub"><iconify-icon icon="mdi:chevron-right" class="text-mint mt-0.5 flex-shrink-0"></iconify-icon><span><strong class="text-gray-300" data-i18n="exp_lang_label">Languages:</strong> <span data-i18n="exp_lang_text">Arabic (Native), English (Professional), Mandarin Chinese (HSK 3).</span></span></li>
+                                <li class="flex items-start gap-2 text-sm text-sub"><iconify-icon icon="mdi:chevron-right" class="text-mint mt-0.5 flex-shrink-0"></iconify-icon><span><strong class="text-gray-300" data-i18n="exp_interests_label">Interests:</strong> <span data-i18n="exp_interests_text">Photography (Cultural scenes and structural landscapes).</span></span></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-
     </main>
 
     <!-- ===== FOOTER ===== -->
@@ -902,12 +861,8 @@
                 <span class="font-mono text-xs tracking-widest text-sub uppercase">engnadeem</span>
             </div>
             <div class="flex items-center gap-6">
-                <a href="mailto:China@engnadeem.com" class="text-sub hover:text-mint transition-colors">
-                    <iconify-icon icon="mdi:email-outline" class="text-xl"></iconify-icon>
-                </a>
-                <a href="https://cn.engnadeem.com/about-us" target="_blank" class="text-sub hover:text-mint transition-colors">
-                    <iconify-icon icon="mdi:web" class="text-xl"></iconify-icon>
-                </a>
+                <a href="mailto:China@engnadeem.com" class="text-sub hover:text-mint transition-colors"><iconify-icon icon="mdi:email-outline" class="text-xl"></iconify-icon></a>
+                <a href="https://cn.engnadeem.com/about-us" target="_blank" class="text-sub hover:text-mint transition-colors"><iconify-icon icon="mdi:web" class="text-xl"></iconify-icon></a>
             </div>
             <p class="font-mono text-[10px] tracking-wider text-sub/50" data-i18n="footer_text">© 2026 engnadeem. All Rights Reserved.</p>
         </div>
@@ -919,34 +874,173 @@
         'use strict';
 
         // ============================================
+        // TRANSLATION DICTIONARY (EN / ZH / AR)
+        // ============================================
+        const T = {
+            preloader_text: { en: 'INITIALIZING SYSTEMS_', zh: '系统初始化_', ar: 'جاري تهيئة الأنظمة_' },
+            nav_summary: { en: 'Summary', zh: '简介', ar: 'ملخص' },
+            nav_skills: { en: 'Skills', zh: '技能', ar: 'المهارات' },
+            nav_certs: { en: 'Certifications', zh: '认证', ar: 'الشهادات' },
+            nav_projects: { en: 'Projects', zh: '项目', ar: 'المشاريع' },
+            nav_experience: { en: 'Experience', zh: '经验', ar: 'الخبرة' },
+            hero_status: { en: 'SYSTEMS ONLINE — READY FOR DEPLOYMENT', zh: '系统在线 — 部署就绪', ar: 'الأنظمة متصلة — جاهزة للنشر' },
+            name_first: { en: 'Ali Nadeem', zh: '阿里', ar: 'علي نديم' },
+            name_last: { en: ' ISMAIL', zh: '·纳迪姆', ar: ' إسماعيل' },
+            subtitle: { en: 'Mechanical CAD Engineer & MEP Specialist', zh: '机械CAD工程师与MEP专家', ar: 'مهندس ميكانيكي CAD وأخصائي MEP' },
+            hero_path: { en: 'https://portfolio.engnadeem.com/', zh: 'https://portfolio.engnadeem.com/', ar: 'https://portfolio.engnadeem.com/' },
+            hero_cta1: { en: 'VIEW PROJECTS', zh: '查看项目', ar: 'عرض المشاريع' },
+            hero_cta2: { en: 'CERTIFICATIONS', zh: '认证资质', ar: 'الشهادات' },
+            scroll_label: { en: 'SCROLL', zh: '滚动', ar: 'تمرير' },
+            tag_ms: { en: "Master's Candidate", zh: '硕士候选人', ar: 'مرشح ماجستير' },
+            tag_sustain: { en: 'Sustainable Energy', zh: '可持续能源', ar: 'الطاقة المستدامة' },
+            tag_i40: { en: 'Industry 4.0', zh: '工业4.0', ar: 'الصناعة 4.0' },
+            tag_industrial: { en: 'Industrial', zh: '工业', ar: 'صناعي' },
+            summary_title: { en: 'Professional Summary', zh: '专业简介', ar: 'الملخص المهني' },
+            summary_text: {
+                en: 'My name is Ali Nadeem, a mechanical engineer, CAD expert, and Teaching Assistant at <a href="https://www.su.edu.ye" target="_blank" rel="noopener" class="uni-link">Sana\'a University</a> helping to develop sustainable energy solutions in Yemen. I am currently pursuing my master\'s degree in mechanical engineering at <a href="https://www.cqu.edu.cn" target="_blank" rel="noopener" class="uni-link">Chongqing University</a> while working as a full-time Mechanical Engineer. My professional work spans multiple projects focused on sustainable development and the Fourth Industrial Revolution (Industry 4.0).',
+                zh: '我是Ali Nadeem，一名机械工程师、CAD专家，同时也是<a href="https://www.su.edu.ye" target="_blank" rel="noopener" class="uni-link">萨那大学</a>的助教，致力于在也门开发可持续能源解决方案。我目前在<a href="https://www.cqu.edu.cn" target="_blank" rel="noopener" class="uni-link">重庆大学</a>攻读机械工程硕士学位，同时担任全职机械工程师。我的专业工作涉及多个项目，重点关注可持续发展和第四次工业革命（工业4.0）。',
+                ar: 'أنا علي نديم، مهندس ميكانيكي وخبير CAD ومساعد تدريس في <a href="https://www.su.edu.ye" target="_blank" rel="noopener" class="uni-link">جامعة صنعاء</a> أساعد في تطوير حلول الطاقة المستدامة في اليمن. أح حالياً درجة الماجستير في الهندسة الميكانيكية في <a href="https://www.cqu.edu.cn" target="_blank" rel="noopener" class="uni-link">جامعة تشونغتشينغ</a> بينما أعمل كمهندس ميكانيكي بدوام كامل. يمتد عملي المهني عبر مشاريع متعددة تركز على التنمية المستدامة والثورة الصناعية الرابعة (الصناعة 4.0).'
+            },
+            skills_title: { en: 'Core Technical Skills', zh: '核心技术能力', ar: 'المهارات التقنية الأساسية' },
+            proficiency_label: { en: 'PROFICIENCY', zh: '熟练度', ar: 'الكفاءة' },
+            skill_design: { en: 'Design & Modeling', zh: '设计与建模', ar: 'التصميم والنمذجة' },
+            skill_design_desc: { en: '2D/3D CAD, MEP Spatial Coordination, Drafting Standards', zh: '2D/3D CAD、MEP空间协调、制图标准', ar: 'CAD ثنائي/ثلاثي الأبعاد، التنسيق المكاني MEP، معايير الرسم' },
+            skill_mep: { en: 'MEP Systems', zh: 'MEP系统', ar: 'أنظمة MEP' },
+            skill_mep_desc: { en: 'Advanced HVAC Layouts, Fire Protection Networks, Sustainable Energy Integration', zh: '高级HVAC布局、消防网络、可持续能源集成', ar: 'تخطيطات HVAC المتقدمة، شبكات الحماية من الحرائق، تكامل الطاقة المستدامة' },
+            skill_industry: { en: 'Industry 4.0', zh: '工业4.0', ar: 'الصناعة 4.0' },
+            skill_industry_desc: { en: 'Digital Twin Modeling, Intelligent Manufacturing, Industrial Robotics', zh: '数字孪生建模、智能制造、工业机器人', ar: 'نمذجة التوأم الرقمي، التصنيع الذكي، الروبوتات الصناعية' },
+            skill_analysis: { en: 'Analysis & Diagnostics', zh: '分析与诊断', ar: 'التحليل والتشخيص' },
+            skill_analysis_desc: { en: 'Rotor and Bearing Fault Diagnosis, Applied Deep Learning', zh: '转子和轴承故障诊断、应用深度学习', ar: 'تشخيص أعطال الدوار والمحامل، التعلم العميق التطبيقي' },
+            cert_title: { en: 'Certifications', zh: '认证', ar: 'الشهادات' },
+            cert_desc: { en: 'A comprehensive record of continuous learning, professional certifications, and technical training.', zh: '持续学习、专业认证和技术培训的全面记录。', ar: 'سجل شامل للتعلم المستمر والشهادات المهنية والتدريب التقني.' },
+            th_org: { en: 'Organization', zh: '机构', ar: 'المنظمة' },
+            th_cert: { en: 'Certification / Course Name', zh: '认证/课程名称', ar: 'الشهادة / اسم الدورة' },
+            th_cred: { en: 'Credential', zh: '证书', ar: 'الاعتماد' },
+            table_eng: { en: 'Engineering, CAD & Design', zh: '工程、CAD与设计', ar: 'الهندسة وCAD والتصميم' },
+            table_sap: { en: 'Enterprise Software & Systems (SAP)', zh: '企业软件与系统 (SAP)', ar: 'برمجيات وأنظمة المؤسسات (SAP)' },
+            table_ds: { en: 'Data Science, Machine Learning & Programming', zh: '数据科学、机器学习与编程', ar: 'علوم البيانات والتعلم الآلي والبرمجة' },
+            table_pm: { en: 'Project Management, Operations & Communication', zh: '项目管理、运营与沟通', ar: 'إدارة المشاريع والعمليات والتواصل' },
+            cert_dassault_3dexperience: { en: 'Certified 3DEXPERIENCE 3DSwymer - Associate', zh: '认证3DEXPERIENCE 3DSwymer - 助理级', ar: 'شهادة 3DEXPERIENCE 3DSwymer - مساعد' },
+            cert_dassault_3dcreator: { en: 'Certified SOLIDWORKS 3D Creator Associate', zh: '认证SOLIDWORKS 3D Creator助理', ar: 'شهادة SOLIDWORKS 3D Creator مساعد' },
+            cert_dassault_cswa: { en: 'SOLIDWORKS CAD Design Associate (CSWA)', zh: 'SOLIDWORKS CAD设计助理 (CSWA)', ar: 'SOLIDWORKS CAD تصميم مساعد (CSWA)' },
+            cert_dassault_sd: { en: 'SOLIDWORKS Sustainability Associate (CSWA-SD)', zh: 'SOLIDWORKS可持续性助理 (CSWA-SD)', ar: 'SOLIDWORKS استدامة مساعد (CSWA-SD)' },
+            cert_autodesk_cam: { en: 'Intro to CAD, CAM & Practical CNC Machining', zh: 'CAD、CAM与实用CNC加工入门', ar: 'مقدمة في CAD وCAM والتصنيع CNC العملي' },
+            cert_autodesk_fusion: { en: 'Intro to Mechanical Eng. Design & Manufacturing (Fusion 360)', zh: '机械工程设计制造入门 (Fusion 360)', ar: 'مقدمة في تصميم وتصنيع الهندسة الميكانيكية (Fusion 360)' },
+            cert_sap_asset: { en: 'SAP S/4HANA Asset Management', zh: 'SAP S/4HANA资产管理', ar: 'SAP S/4HANA إدارة الأصول' },
+            cert_sap_industry: { en: 'SAP Industry 4.Now', zh: 'SAP工业4.Now', ar: 'SAP الصناعة 4.Now' },
+            cert_sap_quality: { en: 'SAP Quality Management ERP 6.0 EHP5', zh: 'SAP质量管理ERP 6.0 EHP5', ar: 'SAP إدارة الجودة ERP 6.0 EHP5' },
+            cert_sap_bpi: { en: 'SAP Business Process Integration (S/4HANA)', zh: 'SAP业务流程集成 (S/4HANA)', ar: 'SAP تكامل العمليات التجارية (S/4HANA)' },
+            cert_sap_sales: { en: 'SAP Sales Cloud 2011', zh: 'SAP销售云2011', ar: 'SAP سحابة المبيعات 2011' },
+            cert_sap_s4hana: { en: 'SAP Certified – SAP S/4HANA Cloud Private Edition (Sourcing & Procurement)', zh: 'SAP认证 – SAP S/4HANA云私有版（寻源与采购）', ar: 'SAP معتمد – SAP S/4HANA سحابة خاصة (التوريد والمشتريات)' },
+            cert_sap_badge: { en: 'SAP Certification (Badge ID: 60f595d2‑7750‑434a‑9477‑f7ce8e100694)', zh: 'SAP认证（徽章ID：60f595d2‑7750‑434a‑9477‑f7ce8e100694）', ar: 'شهادة SAP (رقم الشارة: 60f595d2‑7750‑434a‑9477‑f7ce8e100694)' },
+            cert_mathworks: { en: 'Machine Learning Onramp', zh: '机器学习入门', ar: 'مدخل إلى التعلم الآلي' },
+            cert_raspberry: { en: 'Raspberry Pi Platform & Python Programming', zh: 'Raspberry Pi平台与Python编程', ar: 'منصة Raspberry Pi وبرمجة Python' },
+            cert_unido: { en: 'Industry 4.0', zh: '工业4.0', ar: 'الصناعة 4.0' },
+            cert_unssc: { en: 'Fundamentals of Procurement', zh: '采购基础', ar: 'أساسيات المشتريات' },
+            cert_uva: { en: 'Fundamentals of Project Planning & Management', zh: '项目规划与管理基础', ar: 'أساسيات تخطيط وإدارة المشاريع' },
+            cert_vmedu: { en: 'Six Sigma Yellow Belt', zh: '六西格玛黄带', ar: 'ستة سيغما الحزام الأصفر' },
+            cert_emails: { en: 'Write Professional Emails in English', zh: '撰写专业英文邮件', ar: 'كتابة رسائل البريد الإلكتروني المهنية بالإنجليزية' },
+            cert_stem: { en: 'English for STEM', zh: 'STEM英语', ar: 'الإنجليزية للعلوم والتكنولوجيا' },
+            cert_pm1: { en: 'Foundations of Project Management', zh: '项目管理基础', ar: 'أساسيات إدارة المشاريع' },
+            cert_pm2: { en: 'Foundations of Project Management (second certificate)', zh: '项目管理基础（第二份证书）', ar: 'أساسيات إدارة المشاريع (شهادة ثانية)' },
+            verify_credential: { en: 'VERIFY', zh: '验证', ar: 'تحقق' },
+            view_certificate: { en: 'VIEW', zh: '查看', ar: 'عرض' },
+            projects_title: { en: 'Featured Projects', zh: '精选项目', ar: 'المشاريع المميزة' },
+            p1_title: { en: 'Advanced Industrial Application', zh: '先进工业应用', ar: 'تطبيق صناعي متقدم' },
+            p1_obj_label: { en: 'Objective:', zh: '目标：', ar: 'الهدف:' },
+            p1_text: { en: 'Applying advanced mechanical engineering and CAD principles to a complex industrial project.', zh: '将先进的机械工程和CAD原理应用于复杂的工业项目。', ar: 'تطبيق مبادئ الهندسة الميكانيكية المتقدمة وCAD على مشروع صناعي معقد.' },
+            p1_item1: { en: 'Detailed layout and system integration.', zh: '详细的布局和系统集成。', ar: 'تخطيط تفصيلي وتكامل الأنظمة.' },
+            p1_item2: { en: 'Optimized operational efficiency aligned with structural requirements.', zh: '优化运营效率，符合结构要求。', ar: 'تحسين الكفاءة التشغيلية بما يتوافق مع المتطلبات الهيكلية.' },
+            p1_item3: { en: 'View full details on', zh: '在', ar: 'عرض التفاصيل الكاملة على' },
+            p2_title: { en: 'Solar Training Room', zh: '太阳能培训室', ar: 'غرفة تدريب الطاقة الشمسية' },
+            p2_tag: { en: 'Renewable Energy', zh: '可再生能源', ar: 'الطاقة المتجددة' },
+            p2_obj_label: { en: 'Objective:', zh: '目标：', ar: 'الهدف:' },
+            p2_text: { en: 'Provide technical support to vocational training centers through solar technology education, laboratory development, and modern training infrastructure.', zh: '通过太阳能技术教育、实验室开发和现代化培训基础设施，为职业培训中心提供技术支持。', ar: 'تقديم الدعم التقني لمراكز التدريب المهني من خلال التعليم بتقنيات الطاقة الشمسية وتطوير المختبرات والبنية التحتية التدريبية الحديثة.' },
+            p2_item1: { en: 'Delivered technical and soft skills training focused on solar energy technologies.', zh: '提供以太阳能技术为重点的技术和软技能培训。', ar: 'تقديم تدريب على المهارات التقنية والشخصية focused على تقنيات الطاقة الشمسية.' },
+            p2_item2: { en: 'Rehabilitated training classrooms and installed advanced solar technology laboratory equipment.', zh: '改造培训教室并安装先进的太阳能技术实验室设备。', ar: 'ترميم فصول التدريب وتركيب معدات مختبر تقنيات الطاقة الشمسية المتقدمة.' },
+            p2_item3: { en: 'Enhanced trainee skills and improved the quality of vocational education facilities.', zh: '提升学员技能，改善职业教育设施质量。', ar: 'تعزيز مهارات المتدربين وتحسين جودة مرافق التعليم المهني.' },
+            p2_link: { en: 'View Solar Lab 3D Model', zh: '查看太阳能实验室3D模型', ar: 'عرض نموذج مختبر الطاقة الشمسية ثلاثي الأبعاد' },
+            p3_title: { en: 'Sustainable MEP Design', zh: '可持续MEP设计', ar: 'تصميم MEP مستدام' },
+            p3_placeholder: { en: 'HVAC 3D ISOMETRIC', zh: 'HVAC 3D等轴测', ar: 'HVAC ثلاثي الأبعاد إيزومتري' },
+            p3_obj_label: { en: 'Objective:', zh: '目标：', ar: 'الهدف:' },
+            p3_text: { en: 'Design and coordinate comprehensive mechanical systems for commercial/industrial facilities.', zh: '为商业/工业设施设计和协调综合机械系统。', ar: 'تصميم وتنسيق الأنظمة الميكانيكية الشاملة للمنشآت التجارية والصناعية.' },
+            p3_item1: { en: 'Developed detailed 3D CAD models for HVAC ductwork and fire protection piping.', zh: '为HVAC风管系统和消防管道开发详细的3D CAD模型。', ar: 'تطوير نماذج CAD ثلاثية الأبعاد تفصيلية لأنابيب HVAC وأنابيب الحماية من الحرائق.' },
+            p3_item2: { en: 'Integrated sustainable energy solutions to reduce the overall carbon footprint.', zh: '集成可持续能源解决方案以减少整体碳足迹。', ar: 'تكامل حلول الطاقة المستدامة لتقليل البصمة الكربونية الإجمالية.' },
+            p4_title: { en: 'Intelligent Manufacturing: Digital Twins', zh: '智能制造：数字孪生', ar: 'التصنيع الذكي: التوائم الرقمية' },
+            p4_placeholder: { en: 'DIGITAL TWIN ROTOR', zh: '数字孪生转子', ar: 'توأم رقمي دوار' },
+            p4_obj_label: { en: 'Objective:', zh: '目标：', ar: 'الهدف:' },
+            p4_text: { en: 'Create a two-stage diagnostic framework utilizing CAD and AI for predictive maintenance.', zh: '利用CAD和AI创建两阶段诊断框架，用于预测性维护。', ar: 'إنشاء إطار تشخيصي من مرحلتين باستخدام CAD والذكاء الاصطناعي للصيانة التنبؤية.' },
+            p4_item1: { en: 'Modeled accurate mechanical representations of rotors and bearings.', zh: '对转子和轴承进行精确的机械建模。', ar: 'نمذجة تمثيلات ميكانيكية دقيقة للدوار والمحامل.' },
+            p4_item2: { en: 'Integrated edge computing and cloud computing utilizing STFT for fault diagnosis.', zh: '集成边缘计算和云计算，利用STFT进行故障诊断。', ar: 'تكامل الحوسبة الطرفية والحوسبة السحابية باستخدام STFT لتشخيص الأعطال.' },
+            exp_title: { en: 'Professional Experience & Background', zh: '专业经验与背景', ar: 'الخبرة المهنية والخلفية' },
+            exp_ta: { en: "Teaching Assistant | Sana'a University", zh: '助教 | 萨那大学', ar: 'مساعد تدريس | جامعة صنعاء' },
+            exp_ta_sub: { en: 'Academic Instruction & Research', zh: '学术教学与研究', ar: 'التدريس الأكاديمي والبحث' },
+            exp_ta_text: { en: 'Instructing engineering students in core mechanical principles, CAD software applications, and advanced diagnostic research methodologies.', zh: '教授工程学生核心机械原理、CAD软件应用和高级诊断研究方法。', ar: 'تدريس طلاب الهندسة المبادئ الميكانيكية الأساسية وتطبيقات برمجيات CAD ومنهجيات البحث التشخيصي المتقدمة.' },
+            exp_comp: { en: 'Additional Competencies', zh: '附加能力', ar: 'الكفاءات الإضافية' },
+            exp_lang_label: { en: 'Languages:', zh: '语言：', ar: 'اللغات:' },
+            exp_lang_text: { en: 'Arabic (Native), English (Professional), Mandarin Chinese (HSK 3).', zh: '阿拉伯语（母语）、英语（专业）、中文（HSK 3）。', ar: 'العربية (لغة أم)، الإنجليزية (مهنية)، الصينية الماندارين (HSK 3).' },
+            exp_interests_label: { en: 'Interests:', zh: '兴趣：', ar: 'الاهتمامات:' },
+            exp_interests_text: { en: 'Photography (Cultural scenes and structural landscapes).', zh: '摄影（文化场景和结构景观）。', ar: 'التصوير (المشاهد الثقافية والمناظر الهيكلية).' },
+            footer_text: { en: '© 2026 engnadeem. All Rights Reserved.', zh: '© 2026 engnadeem. 保留所有权利。', ar: '© 2026 engnadeem. جميع الحقوق محفوظة.' }
+        };
+
+        let currentLang = 'en';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            document.body.classList.add('lang-switching');
+
+            // RTL for Arabic
+            if (lang === 'ar') {
+                document.documentElement.setAttribute('dir', 'rtl');
+                document.documentElement.setAttribute('lang', 'ar');
+            } else {
+                document.documentElement.setAttribute('dir', 'ltr');
+                document.documentElement.setAttribute('lang', lang);
+            }
+
+            setTimeout(() => {
+                // Plain text translations
+                document.querySelectorAll('[data-i18n]').forEach(el => {
+                    const key = el.getAttribute('data-i18n');
+                    if (T[key] && T[key][lang]) {
+                        el.textContent = T[key][lang];
+                    }
+                });
+                // HTML translations (for links)
+                document.querySelectorAll('[data-i18n-html]').forEach(el => {
+                    const key = el.getAttribute('data-i18n-html');
+                    if (T[key] && T[key][lang]) {
+                        el.innerHTML = T[key][lang];
+                    }
+                });
+                document.body.classList.remove('lang-switching');
+            }, 150);
+
+            document.getElementById('langBtnEn').classList.toggle('active', lang === 'en');
+            document.getElementById('langBtnZh').classList.toggle('active', lang === 'zh');
+            document.getElementById('langBtnAr').classList.toggle('active', lang === 'ar');
+        }
+
+        document.getElementById('langBtnEn').addEventListener('click', () => setLanguage('en'));
+        document.getElementById('langBtnZh').addEventListener('click', () => setLanguage('zh'));
+        document.getElementById('langBtnAr').addEventListener('click', () => setLanguage('ar'));
+
+        // ============================================
         // PRELOADER
         // ============================================
         window.addEventListener('load', () => {
             const preloader = document.getElementById('preloader');
             gsap.to(preloader, {
-                yPercent: -100,
-                duration: 1,
-                ease: "power4.inOut",
-                delay: 0.5,
-                onComplete: () => {
-                    preloader.style.display = 'none';
-                    animateHero();
-                    animateNav();
-                }
+                yPercent: -100, duration: 1, ease: "power4.inOut", delay: 0.5,
+                onComplete: () => { preloader.style.display = 'none'; animateHero(); animateNav(); }
             });
         });
 
-        // ============================================
-        // NAV
-        // ============================================
         function animateNav() {
-            const nav = document.getElementById('mainNav');
-            gsap.to(nav, { y: 0, duration: 0.6, ease: "power3.out" });
+            gsap.to('#mainNav', { y: 0, duration: 0.6, ease: "power3.out" });
         }
 
-        // ============================================
-        // HERO ANIMATIONS
-        // ============================================
         function animateHero() {
             const tl = gsap.timeline();
             tl.from('#heroName', { y: 60, opacity: 0, duration: 1, ease: "power3.out" })
@@ -963,34 +1057,25 @@
         document.querySelectorAll('.reveal-section').forEach(section => {
             gsap.fromTo(section,
                 { y: 50, opacity: 0 },
-                {
-                    y: 0, opacity: 1, duration: 0.8, ease: "power2.out",
-                    scrollTrigger: {
-                        trigger: section,
-                        start: "top 90%",
-                        end: "bottom 10%",
-                        toggleActions: "play reverse play reverse"
-                    }
+                { y: 0, opacity: 1, duration: 0.8, ease: "power2.out",
+                  scrollTrigger: { trigger: section, start: "top 90%", end: "bottom 10%", toggleActions: "play reverse play reverse" }
                 }
             );
         });
 
-        // ============================================
-        // SKILL BARS
-        // ============================================
+        // Skill bars
         document.querySelectorAll('.skill-bar-fill').forEach(bar => {
             ScrollTrigger.create({
-                trigger: bar,
-                start: "top 90%",
+                trigger: bar, start: "top 90%",
                 onEnter: () => bar.classList.add('animate'),
                 onLeaveBack: () => bar.classList.remove('animate')
             });
         });
 
         // ============================================
-        // FLOATING PARTICLES
+        // PARTICLES
         // ============================================
-        const particlesContainer = document.getElementById('particles');
+        const pc = document.getElementById('particles');
         for (let i = 0; i < 30; i++) {
             const p = document.createElement('div');
             p.className = 'particle';
@@ -998,144 +1083,13 @@
             p.style.top = Math.random() * 100 + '%';
             p.style.opacity = Math.random() * 0.5 + 0.1;
             p.style.width = p.style.height = (Math.random() * 3 + 1) + 'px';
-            particlesContainer.appendChild(p);
-
+            pc.appendChild(p);
             gsap.to(p, {
-                y: -100 - Math.random() * 200,
-                x: (Math.random() - 0.5) * 80,
-                opacity: 0,
-                duration: 4 + Math.random() * 6,
-                repeat: -1,
-                delay: Math.random() * 5,
-                ease: "none"
+                y: -100 - Math.random() * 200, x: (Math.random() - 0.5) * 80,
+                opacity: 0, duration: 4 + Math.random() * 6, repeat: -1,
+                delay: Math.random() * 5, ease: "none"
             });
         }
-
-        // ============================================
-        // LANGUAGE SYSTEM
-        // ============================================
-        const translations = {
-            hero_status: { en: 'SYSTEMS ONLINE — READY FOR DEPLOYMENT', zh: '系统在线 — 部署就绪' },
-            name_en: { en: 'Ali Nadeem', zh: '阿里' },
-            name_highlight: { en: ' ISMAIL', zh: '·纳迪姆' },
-            subtitle: { en: 'Mechanical CAD Engineer & MEP Specialist', zh: '机械CAD工程师与MEP专家' },
-            hero_path: { en: '~/engnadeem/portfolio', zh: '~/engnadeem/作品集' },
-            hero_cta1: { en: 'VIEW PROJECTS', zh: '查看项目' },
-            hero_cta2: { en: 'CERTIFICATIONS', zh: '认证资质' },
-            tag_ms: { en: "Master's Candidate", zh: '硕士候选人' },
-            tag_sustain: { en: 'Sustainable Energy', zh: '可持续能源' },
-            tag_i40: { en: 'Industry 4.0', zh: '工业4.0' },
-            summary_title: { en: 'Professional Summary', zh: '专业简介' },
-            summary_text: {
-                en: "My name is Ali Nadeem, a mechanical engineer, CAD expert, and Teaching Assistant at Sana'a University helping to develop sustainable energy solutions in Yemen. I am currently pursuing my master's degree in mechanical engineering at Chongqing University while working as a full-time Mechanical Engineer. My professional work spans multiple projects focused on sustainable development and the Fourth Industrial Revolution (Industry 4.0).",
-                zh: '我是Ali Nadeem，一名机械工程师、CAD专家，同时也是萨那大学的助教，致力于在也门开发可持续能源解决方案。我目前在重庆大学攻读机械工程硕士学位，同时担任全职机械工程师。我的专业工作涉及多个项目，重点关注可持续发展和第四次工业革命（工业4.0）。'
-            },
-            skills_title: { en: 'Core Technical Skills', zh: '核心技术能力' },
-            skill_design: { en: 'Design & Modeling', zh: '设计与建模' },
-            skill_design_desc: { en: '2D/3D CAD, MEP Spatial Coordination, Drafting Standards', zh: '2D/3D CAD、MEP空间协调、制图标准' },
-            skill_mep: { en: 'MEP Systems', zh: 'MEP系统' },
-            skill_mep_desc: { en: 'Advanced HVAC Layouts, Fire Protection Networks, Sustainable Energy Integration', zh: '高级HVAC布局、消防网络、可持续能源集成' },
-            skill_industry: { en: 'Industry 4.0', zh: '工业4.0' },
-            skill_industry_desc: { en: 'Digital Twin Modeling, Intelligent Manufacturing, Industrial Robotics', zh: '数字孪生建模、智能制造、工业机器人' },
-            skill_analysis: { en: 'Analysis & Diagnostics', zh: '分析与诊断' },
-            skill_analysis_desc: { en: 'Rotor and Bearing Fault Diagnosis, Applied Deep Learning', zh: '转子和轴承故障诊断、应用深度学习' },
-            cert_title: { en: 'Projects & Certifications', zh: '项目与认证' },
-            cert_desc: { en: 'A comprehensive record of continuous learning, professional certifications, and technical training.', zh: '持续学习、专业认证和技术培训的全面记录。' },
-            th_org: { en: 'Organization', zh: '机构' },
-            th_cert: { en: 'Certification / Course Name', zh: '认证/课程名称' },
-            th_cred: { en: 'Credential', zh: '证书' },
-            table_eng: { en: 'Engineering, CAD & Design', zh: '工程、CAD与设计' },
-            table_sap: { en: 'Enterprise Software & Systems (SAP)', zh: '企业软件与系统 (SAP)' },
-            table_ds: { en: 'Data Science, Machine Learning & Programming', zh: '数据科学、机器学习与编程' },
-            table_pm: { en: 'Project Management, Operations & Communication', zh: '项目管理、运营与沟通' },
-            cert_dassault_3dexperience: { en: 'Certified 3DEXPERIENCE 3DSwymer - Associate', zh: '认证3DEXPERIENCE 3DSwymer - 助理级' },
-            cert_dassault_3dcreator: { en: 'Certified SOLIDWORKS 3D Creator Associate', zh: '认证SOLIDWORKS 3D Creator助理' },
-            cert_dassault_cswa: { en: 'SOLIDWORKS CAD Design Associate (CSWA)', zh: 'SOLIDWORKS CAD设计助理 (CSWA)' },
-            cert_dassault_sd: { en: 'SOLIDWORKS Sustainability Associate (CSWA-SD)', zh: 'SOLIDWORKS可持续性助理 (CSWA-SD)' },
-            cert_autodesk_cam: { en: 'Intro to CAD, CAM & Practical CNC Machining', zh: 'CAD、CAM与实用CNC加工入门' },
-            cert_autodesk_fusion: { en: 'Intro to Mechanical Eng. Design & Manufacturing (Fusion 360)', zh: '机械工程设计制造入门 (Fusion 360)' },
-            cert_sap_asset: { en: 'SAP S/4HANA Asset Management', zh: 'SAP S/4HANA资产管理' },
-            cert_sap_industry: { en: 'SAP Industry 4.Now', zh: 'SAP工业4.Now' },
-            cert_sap_quality: { en: 'SAP Quality Management ERP 6.0 EHP5', zh: 'SAP质量管理ERP 6.0 EHP5' },
-            cert_sap_bpi: { en: 'SAP Business Process Integration (S/4HANA)', zh: 'SAP业务流程集成 (S/4HANA)' },
-            cert_sap_sales: { en: 'SAP Sales Cloud 2011', zh: 'SAP销售云2011' },
-            cert_sap_s4hana: { en: 'SAP Certified – SAP S/4HANA Cloud Private Edition (Sourcing & Procurement)', zh: 'SAP认证 – SAP S/4HANA云私有版（寻源与采购）' },
-            cert_sap_badge: { en: 'SAP Certification (Badge ID: 60f595d2‑7750‑434a‑9477‑f7ce8e100694)', zh: 'SAP认证（徽章ID：60f595d2‑7750‑434a‑9477‑f7ce8e100694）' },
-            cert_mathworks: { en: 'Machine Learning Onramp', zh: '机器学习入门' },
-            cert_raspberry: { en: 'Raspberry Pi Platform & Python Programming', zh: 'Raspberry Pi平台与Python编程' },
-            cert_unido: { en: 'Industry 4.0', zh: '工业4.0' },
-            cert_unssc: { en: 'Fundamentals of Procurement', zh: '采购基础' },
-            cert_uva: { en: 'Fundamentals of Project Planning & Management', zh: '项目规划与管理基础' },
-            cert_vmedu: { en: 'Six Sigma Yellow Belt', zh: '六西格玛黄带' },
-            cert_emails: { en: 'Write Professional Emails in English', zh: '撰写专业英文邮件' },
-            cert_stem: { en: 'English for STEM', zh: 'STEM英语' },
-            cert_pm1: { en: 'Foundations of Project Management', zh: '项目管理基础' },
-            cert_pm2: { en: 'Foundations of Project Management (second certificate)', zh: '项目管理基础（第二份证书）' },
-            verify_credential: { en: 'VERIFY', zh: '验证' },
-            view_certificate: { en: 'VIEW', zh: '查看' },
-            projects_title: { en: 'Featured Projects', zh: '精选项目' },
-            p1_title: { en: 'Advanced Industrial Application', zh: '先进工业应用' },
-            p1_obj_label: { en: 'Objective:', zh: '目标：' },
-            p1_text: { en: 'Applying advanced mechanical engineering and CAD principles to a complex industrial project.', zh: '将先进的机械工程和CAD原理应用于复杂的工业项目。' },
-            p1_item1: { en: 'Detailed layout and system integration.', zh: '详细的布局和系统集成。' },
-            p1_item2: { en: 'Optimized operational efficiency aligned with structural requirements.', zh: '优化运营效率，符合结构要求。' },
-            p1_item3: { en: 'View full details on', zh: '在' },
-            p2_title: { en: 'Solar Training Room', zh: '太阳能培训室' },
-            p2_tag: { en: 'Renewable Energy', zh: '可再生能源' },
-            p2_obj_label: { en: 'Objective:', zh: '目标：' },
-            p2_text: { en: 'Provide technical support to vocational training centers through solar technology education, laboratory development, and modern training infrastructure.', zh: '通过太阳能技术教育、实验室开发和现代化培训基础设施，为职业培训中心提供技术支持。' },
-            p2_item1: { en: 'Delivered technical and soft skills training focused on solar energy technologies.', zh: '提供以太阳能技术为重点的技术和软技能培训。' },
-            p2_item2: { en: 'Rehabilitated training classrooms and installed advanced solar technology laboratory equipment.', zh: '改造培训教室并安装先进的太阳能技术实验室设备。' },
-            p2_item3: { en: 'Enhanced trainee skills and improved the quality of vocational education facilities.', zh: '提升学员技能，改善职业教育设施质量。' },
-            p2_link: { en: 'View Solar Lab 3D Model', zh: '查看太阳能实验室3D模型' },
-            p3_title: { en: 'Sustainable MEP Design', zh: '可持续MEP设计' },
-            p3_placeholder: { en: 'HVAC 3D ISOMETRIC', zh: 'HVAC 3D等轴测' },
-            p3_obj_label: { en: 'Objective:', zh: '目标：' },
-            p3_text: { en: 'Design and coordinate comprehensive mechanical systems for commercial/industrial facilities.', zh: '为商业/工业设施设计和协调综合机械系统。' },
-            p3_item1: { en: 'Developed detailed 3D CAD models for HVAC ductwork and fire protection piping.', zh: '为HVAC风管系统和消防管道开发详细的3D CAD模型。' },
-            p3_item2: { en: 'Integrated sustainable energy solutions to reduce the overall carbon footprint.', zh: '集成可持续能源解决方案以减少整体碳足迹。' },
-            p4_title: { en: 'Intelligent Manufacturing: Digital Twins', zh: '智能制造：数字孪生' },
-            p4_placeholder: { en: 'DIGITAL TWIN ROTOR', zh: '数字孪生转子' },
-            p4_obj_label: { en: 'Objective:', zh: '目标：' },
-            p4_text: { en: 'Create a two-stage diagnostic framework utilizing CAD and AI for predictive maintenance.', zh: '利用CAD和AI创建两阶段诊断框架，用于预测性维护。' },
-            p4_item1: { en: 'Modeled accurate mechanical representations of rotors and bearings.', zh: '对转子和轴承进行精确的机械建模。' },
-            p4_item2: { en: 'Integrated edge computing and cloud computing utilizing STFT for fault diagnosis.', zh: '集成边缘计算和云计算，利用STFT进行故障诊断。' },
-            exp_title: { en: 'Professional Experience & Background', zh: '专业经验与背景' },
-            exp_ta: { en: "Teaching Assistant | Sana'a University", zh: '助教 | 萨那大学' },
-            exp_ta_sub: { en: 'Academic Instruction & Research', zh: '学术教学与研究' },
-            exp_ta_text: { en: 'Instructing engineering students in core mechanical principles, CAD software applications, and advanced diagnostic research methodologies.', zh: '教授工程学生核心机械原理、CAD软件应用和高级诊断研究方法。' },
-            exp_comp: { en: 'Additional Competencies', zh: '附加能力' },
-            exp_lang_label: { en: 'Languages:', zh: '语言：' },
-            exp_lang_text: { en: 'Arabic (Native), English (Professional), Mandarin Chinese (HSK 3).', zh: '阿拉伯语（母语）、英语（专业）、中文（HSK 3）。' },
-            exp_interests_label: { en: 'Interests:', zh: '兴趣：' },
-            exp_interests_text: { en: 'Photography (Cultural scenes and structural landscapes).', zh: '摄影（文化场景和结构景观）。' },
-            footer_text: { en: '© 2026 engnadeem. All Rights Reserved.', zh: '© 2026 engnadeem. 保留所有权利。' }
-        };
-
-        let currentLang = 'en';
-
-        function setLanguage(lang) {
-            currentLang = lang;
-            document.body.classList.add('lang-switching');
-            document.documentElement.classList.remove('lang-zh', 'lang-en');
-            document.documentElement.classList.add('lang-' + lang);
-
-            setTimeout(() => {
-                document.querySelectorAll('[data-i18n]').forEach(el => {
-                    const key = el.getAttribute('data-i18n');
-                    if (translations[key] && translations[key][lang]) {
-                        el.textContent = translations[key][lang];
-                    }
-                });
-                document.body.classList.remove('lang-switching');
-            }, 150);
-
-            document.getElementById('langBtnEn').classList.toggle('active', lang === 'en');
-            document.getElementById('langBtnZh').classList.toggle('active', lang === 'zh');
-        }
-
-        document.getElementById('langBtnEn').addEventListener('click', () => setLanguage('en'));
-        document.getElementById('langBtnZh').addEventListener('click', () => setLanguage('zh'));
 
         // ============================================
         // SMOOTH SCROLL
@@ -1144,25 +1098,17 @@
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
         });
 
         // ============================================
         // NAV SCROLL EFFECT
         // ============================================
-        let lastScroll = 0;
         const nav = document.getElementById('mainNav');
         window.addEventListener('scroll', () => {
-            const currentScroll = window.pageYOffset;
-            if (currentScroll > 100) {
-                nav.style.borderBottomColor = 'rgba(0,255,196,0.08)';
-            } else {
-                nav.style.borderBottomColor = 'rgba(255,255,255,0.08)';
-            }
-            lastScroll = currentScroll;
+            nav.style.borderBottomColor = window.pageYOffset > 100
+                ? 'rgba(0,255,196,0.08)' : 'rgba(255,255,255,0.08)';
         });
 
     })();
