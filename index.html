@@ -175,6 +175,8 @@ html[dir="rtl"] #backToTop{right:auto;left:30px}
 .scramble-text{display:inline-block}
 .counter{font-variant-numeric:tabular-nums}
 @media(max-width:768px){
+.lang-btn{padding:5px 8px;font-size:9px;letter-spacing:.05em}
+.lang-toggle{padding:2px}
 .cert-table,.cert-table thead,.cert-table tbody,.cert-table th,.cert-table td,.cert-table tr{display:block}
 .cert-table thead tr{display:none}
 .cert-table tbody tr{border:1px solid rgba(255,255,255,0.06);margin-bottom:12px;border-radius:8px;overflow:hidden}
@@ -186,6 +188,10 @@ html[dir="rtl"] #backToTop{right:auto;left:30px}
 .cert-table tbody td:nth-of-type(3)::before{content:"LINK"}
 .lang-toggle{gap:2px}
 .lang-btn{padding:6px 10px;font-size:10px}
+@media(max-width:768px){
+.lang-btn{padding:5px 8px;font-size:9px;letter-spacing:.05em}
+.lang-toggle{padding:2px}
+}
 .nav-desktop{display:none!important}
 .mobile-menu-btn{display:flex}
 .timeline-item{padding-left:50px!important;padding-right:0!important}
@@ -278,7 +284,7 @@ html[dir="rtl"] #backToTop{right:auto;left:30px}
     <button class="mobile-menu-btn md:hidden" id="mobileMenuBtn" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
-    <div class="lang-toggle hidden md:flex items-center bg-white/5 rounded-full p-1 border border-border">
+    <div class="lang-toggle flex items-center bg-white/5 rounded-full p-1 border border-border">
       <button id="langBtnEn" class="lang-btn active" data-lang="en">EN</button>
       <button id="langBtnZh" class="lang-btn" data-lang="zh">中文</button>
       <button id="langBtnAr" class="lang-btn" data-lang="ar">عربي</button>
@@ -460,7 +466,7 @@ html[dir="rtl"] #backToTop{right:auto;left:30px}
           <tr><td class="text-sub">SAP / Credly</td><td class="text-gray-300" data-i18n="cert_sap_bpi">SAP Business Process Integration (S/4HANA)</td><td><a href="https://www.credly.com/badges/3e1fe495-c54b-46a0-80b7-79949fd23e96/linked_in_profile" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
           <tr><td class="text-sub">SAP / Credly</td><td class="text-gray-300" data-i18n="cert_sap_sales">SAP Sales Cloud 2011</td><td><a href="https://www.credly.com/badges/7401cd38-69cd-4c82-b60d-615ea06caf43/linked_in_profile" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
           <tr><td class="text-sub">SAP / Credly</td><td class="text-gray-300" data-i18n="cert_sap_s4hana">SAP Certified – SAP S/4HANA Cloud Private Edition (Sourcing & Procurement)</td><td><a href="https://www.credly.com/badges/3251fb34-bab6-41cb-9af3-079b518eb4ae" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
-          <tr><td class="text-sub">SAP / Credly</td><td class="text-gray-300" data-i18n="cert_sap_badge">SAP Certification (Production Planning and Manufacturing)</td><td><a href="https://www.credly.com/badges/60f595d2-7750-434a-9477-f7ce8e100694" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
+          <tr><td class="text-sub">SAP / Credly</td><td class="text-gray-300" data-i18n="cert_sap_badge">SAP Certification (Badge ID: 60f595d2‑7750‑434a‑9477‑f7ce8e100694)</td><td><a href="https://www.credly.com/badges/60f595d2-7750-434a-9477-f7ce8e100694" target="_blank" class="cert-link"><span data-i18n="verify_credential">VERIFY</span> <iconify-icon icon="mdi:open-in-new" class="text-xs"></iconify-icon></a></td></tr>
         </tbody></table>
       </div>
     </div>
@@ -929,9 +935,9 @@ function setLanguage(lang){
     });
     document.body.classList.remove('lang-switching');
   },150);
-  document.getElementById('langBtnEn').classList.toggle('active',lang==='en');
-  document.getElementById('langBtnZh').classList.toggle('active',lang==='zh');
-  document.getElementById('langBtnAr').classList.toggle('active',lang==='ar');
+  document.querySelectorAll('.lang-btn').forEach(btn=>{
+    btn.classList.toggle('active', btn.getAttribute('data-lang')===lang);
+  });
 }
 
 document.getElementById('langBtnEn').addEventListener('click',()=>setLanguage('en'));
